@@ -6,6 +6,14 @@ on:
   push:
     branches:
       - master # 当 master 分支有代码提交时触发 
+  # 这个选项可以使你手动在 Action tab 页面触发工作流
+  workflow_dispatch:
+
+# 设置 GITHUB_TOKEN 的权限，以允许部署到 GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 # 定义一个或多个作业，每个作业可以运行在不同的环境中
 jobs:
@@ -15,21 +23,39 @@ jobs:
     steps:
       # 第一步：检出代码
       - name: Checkout code
-        uses: actions/checkout@v3 # 引用 GitHub Marketplace 上的 Action
+        uses: actions/checkout@v4 # 引用 GitHub Marketplace 上的 Action
+      
+      - uses: pnpm/action-setup@v2 # 改为使用 pnpm
+        with:
+          version: 8
 
       # 第二步：设置 Node.js 环境（安装所需 Node 版本）
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with: # 传递参数给 Action
           node-version: '18'  # 根据项目需要的 Node 版本来设置
+          cache: 'pnpm'
 
       # 第三步：安装依赖
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       # 第四步：打包构建项目
       - name: Build project
-        run: npm run build
+        run: pnpm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          # Upload dist repository
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
 
       # 第五步：通过 SSH 连接并部署到服务器
       # - name: Deploy to Server
