@@ -59,13 +59,6 @@ jobs:
       #   uses: actions/deploy-pages@v2
       ############################ end ###########################
 
-      ############## 以下是部署到 github pages 第二种方案 ##########
-      - name: Deploy 
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist # The folder the action should deploy.
-      ############################ end ###########################
-
       ################# 以下是部署到自己的服务器 ##################
       # 第五步：通过 SSH 连接并部署到服务器
       # - name: Deploy to aliyun Server
