@@ -75,7 +75,7 @@ jobs:
 
       # 第五步：通过 SSH 连接并部署到服务器
       - name: Deploy to aliyun Server
-        uses: easingthemes/ssh-deploy@v5.1.1
+        uses: easingthemes/ssh-deploy@v4.1.10
         with:
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}  # 在 GitHub Secrets 中配置的服务器地址
           REMOTE_USER: ${{ secrets.SERVER_USER }}  # 在 GitHub Secrets 中配置的服务器用户名
