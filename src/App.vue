@@ -11,7 +11,7 @@ import HelloWorld from "./components/HelloWorld.vue";
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <div>张奇实现的 github actions 自动部署</div>
+  <div>张奇实现的 github actions 自动部署，内容修改</div>
 </template>
 
 <style scoped>
