@@ -79,4 +79,18 @@ jobs:
       #       cd /home/front/github-actions  # 替换为你服务器上项目存放的目录
       #       rm -rf *  # 删除原有文件
       #       tar -xzf build.tar.gz  # 解压新构建的文件
+
+      # 第五步：通过 SSH 连接并部署到服务器
+      - name: Deploy to aliyun Server
+        uses: easingthemes/ssh-deploy@v5.1.1
+        with:
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}  # 在 GitHub Secrets 中配置的服务器地址
+          REMOTE_USER: ${{ secrets.SERVER_USER }}  # 在 GitHub Secrets 中配置的服务器用户名
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # 使用你之前添加的 SSH 私钥
+          # 上传 dist 目录下所有
+          SOURCE: "/dist/"
+          # 上传时如果发现build目录下有文件，将其删除
+          ARGS: -rltgoDzvO --delete
+
+          TARGET: /home/front/github-actions
       ############################ end ###########################
