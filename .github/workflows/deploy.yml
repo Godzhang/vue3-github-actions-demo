@@ -1,0 +1,45 @@
+# 可选 - 工作流的名称，将显示在 GitHub 仓库的 "Actions" 标签中。如果省略此字段，将使用工作流文件的名称。
+name: vue3-github-actions-demo
+
+# 定义触发工作流的条件
+on:
+  push:
+    branches:
+      - master # 当 master 分支有代码提交时触发 
+
+# 定义一个或多个作业，每个作业可以运行在不同的环境中
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # 每个作业由一系列步骤组成，这些步骤可以是 shell 命令、脚本或使用预构建的 Action
+    steps:
+      # 第一步：检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3 # 引用 GitHub Marketplace 上的 Action
+
+      # 第二步：设置 Node.js 环境（安装所需 Node 版本）
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with: # 传递参数给 Action
+          node-version: '18'  # 根据项目需要的 Node 版本来设置
+
+      # 第三步：安装依赖
+      - name: Install dependencies
+        run: npm install
+
+      # 第四步：打包构建项目
+      - name: Build project
+        run: npm run build
+
+      # 第五步：通过 SSH 连接并部署到服务器
+      # - name: Deploy to Server
+      #   uses: appleboy/ssh-action@v0.1.6
+      #   with:
+      #     host: ${{ secrets.SERVER_HOST }}  # 在 GitHub Secrets 中配置的服务器地址
+      #     username: ${{ secrets.SERVER_USER }}  # 在 GitHub Secrets 中配置的服务器用户名
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}  # 使用你之前添加的 SSH 私钥
+      #     port: 22  # SSH 端口，默认是 22
+      #     script: |
+      #       cd /home/front/github-actions  # 替换为你服务器上项目存放的目录
+      #       rm -rf *  # 删除原有文件
+      #       tar -xzf build.tar.gz  # 解压新构建的文件
