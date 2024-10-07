@@ -44,21 +44,31 @@ jobs:
       - name: Build project
         run: pnpm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
+      ################# 以下是部署到 github pages ##################
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v3
       
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v2
+      #   with:
+      #     # Upload dist repository
+      #     path: './dist'
+
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v2
+      ############################ end ###########################
+
+      ############## 以下是部署到 github pages 第二种方案 ##########
+      - name: Deploy 
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # Upload dist repository
-          path: './dist'
+          folder: dist # The folder the action should deploy.
+      ############################ end ###########################
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-
+      ################# 以下是部署到自己的服务器 ##################
       # 第五步：通过 SSH 连接并部署到服务器
-      # - name: Deploy to Server
+      # - name: Deploy to aliyun Server
       #   uses: appleboy/ssh-action@v0.1.6
       #   with:
       #     host: ${{ secrets.SERVER_HOST }}  # 在 GitHub Secrets 中配置的服务器地址
@@ -69,3 +79,4 @@ jobs:
       #       cd /home/front/github-actions  # 替换为你服务器上项目存放的目录
       #       rm -rf *  # 删除原有文件
       #       tar -xzf build.tar.gz  # 解压新构建的文件
+      ############################ end ###########################
